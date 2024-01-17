@@ -1,44 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import atm_abi from "../artifacts/contracts/FundManagementContract.sol/FundManagementContract.json";
+import fundAtm_abi from "../artifacts/contracts/FundManagementContract.sol/FundManagementContract.json";
 
 export default function HomePage() {
-  const [ethWallet, setEthWallet] = useState(undefined);
+  const [ethWallet, setYourEthWallet] = useState(undefined);
   const [account, setAccount] = useState(undefined);
-  const [atm, setATM] = useState(undefined);
+  const [fundAtm, setATM] = useState(undefined);
   const [balance, setBalance] = useState(undefined);
   const [showContractAddress, setShowContractAddress] = useState(false);
 
   const contractAddress = "0xBdC2b3F8C5bcD545d9cbC676e3F9E25720700083";
-  const atmABI = atm_abi.abi;
+  const atmABI = fundAtm_abi.abi;
 
-  const getWallet = async () => {
+  const getYourWallet = async () => {
     if (window.ethereum) {
-      setEthWallet(window.ethereum);
+      setYourEthWallet(window.ethereum);
     }
+    if (!ethWallet) return;
 
-    if (ethWallet) {
-      const accounts = await ethWallet.request({ method: "eth_accounts" });
-      handleAccount(accounts);
-    }
+    const acc = await ethWallet.request({ method: "eth_accounts" });
+    handleAcc(acc);
   };
 
-  const handleAccount = (accounts) => {
-    if (accounts && accounts.length > 0) {
-      setAccount(accounts[0]);
+  const handleAcc = (acc) => {
+    if (acc && acc?.length >= 1) {
+      setAccount(acc[0]);
     } else {
-      console.log("No account found");
+      console.log("Doesn't got any account");
     }
   };
 
-  const connectAccount = async () => {
+  const connectWalletAccount = async () => {
     if (!ethWallet) {
       alert("MetaMask wallet is required to connect");
       return;
     }
 
-    const accounts = await ethWallet.request({ method: "eth_requestAccounts" });
-    handleAccount(accounts);
+    const acc = await ethWallet.request({ method: "eth_requestAccounts" });
+    handleAcc(acc);
     getATMContract();
   };
 
@@ -51,9 +50,9 @@ export default function HomePage() {
   };
 
   const getBalance = async () => {
-    if (atm) {
+    if (fundAtm) {
       try {
-        const balance = await atm.getBalance();
+        const balance = await fundAtm.getBalance();
         setBalance(balance.toNumber());
       } catch (error) {
         console.log(error);
@@ -62,9 +61,9 @@ export default function HomePage() {
   };
 
   const deposit = async () => {
-    if (atm) {
+    if (fundAtm) {
       try {
-        let tx = await atm.depositFunds(1);
+        let tx = await fundAtm.depositFunds(1);
         await tx.wait();
         getBalance();
       } catch (error) {
@@ -73,23 +72,23 @@ export default function HomePage() {
     }
   };
 
-  const withdraw = async () => {
-    if (atm) {
-      let tx = await atm.withdrawFunds(1);
+  const withdrawToken = async () => {
+    if (!fundAtm) return;
+    try {
+      let tx = await fundAtm.withdrawFunds(1);
       await tx.wait();
       getBalance();
-    }
+    } catch (error) {}
   };
 
-  const buyNFT = async () => {
-    if (atm) {
-      try {
-        let tx = await atm.purchaseNFT(1);
-        await tx.wait();
-        getBalance();
-      } catch (error) {
-        console.log(error);
-      }
+  const buyNftToken = async () => {
+    if (!fundAtm) return;
+    try {
+      let tx = await fundAtm.purchaseNFT(1);
+      await tx.wait();
+      getBalance();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -100,14 +99,14 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    getWallet();
+    getYourWallet();
   }, []);
 
   useEffect(() => {
-    if (atm) {
+    if (fundAtm) {
       getBalance();
     }
-  }, [atm]);
+  }, [fundAtm]);
 
   return (
     <main className="container">
@@ -116,7 +115,9 @@ export default function HomePage() {
       </header>
       <div className="content">
         {!account ? (
-          <button onClick={connectAccount}>Connect MetaMask wallet</button>
+          <button onClick={connectWalletAccount}>
+            Connect MetaMask wallet
+          </button>
         ) : (
           <>
             <p>Your Account: {account}</p>
@@ -132,8 +133,8 @@ export default function HomePage() {
                 </div>
               )}
               <button onClick={deposit}>Deposit Token</button>
-              <button onClick={withdraw}>Withdraw Token</button>
-              <button onClick={buyNFT}>Buy NFT</button>
+              <button onClick={withdrawToken}>withdraw Token</button>
+              <button onClick={buyNftToken}>Buy NFT</button>
             </div>
           </>
         )}

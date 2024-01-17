@@ -1,3 +1,14 @@
+# Fund Management Contract
+
+This is a simple Solidity smart contract for fund management. It allows the owner to deposit and withdraw funds, check the balance, and purchase NFTs using the deposited funds.
+
+## Features
+
+- Deposit funds into the contract
+- Withdraw funds from the contract
+- Check the current balance of the contract
+- Purchase NFTs using the deposited funds
+
 # Starter Next/Hardhat Project
 
 After cloning the github, you will want to do the following to get the code running on your computer.
@@ -8,5 +19,5 @@ After cloning the github, you will want to do the following to get the code runn
 4. In the third terminal, type: npx hardhat run --network localhost scripts/deploy.js
 5. Back in the first terminal, type npm run dev to launch the front-end.
 
-After this, the project will be running on your localhost. 
+After this, the project will be running on your localhost.
 Typically at http://localhost:3000/

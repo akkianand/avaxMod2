@@ -141,27 +141,37 @@ export default function HomePage() {
       </div>
       <style jsx>{`
         * {
-          padding: 0;
-          margin: 0;
+          padding: 0.5em;
+          margin: 0.5em;
+        }
+
+        header {
+          margin-top : 1em
+          margin-bottom: 2em;
+        }
+           h1 {
+          color: #fg78b4;
+          font-size:2rem;
         }
 
         .container {
           text-align: center;
-          padding-top: 4em;
           font-family: "Helvetica", sans-serif;
-          background-color: #282c34;
-          width: 100vw;
-          height: 100vh;
-          color: #61dafb;
+          background-color: #193c34;
           font-size: 1.3rem;
+          width: 99vw;
+          padding-top: 3.85em;
+          height: 99vh;
+          color: #61dafb;
         }
 
-        h1 {
-          color: #ff69b4;
-        }
-
-        header {
-          margin-bottom: 20px;
+        .button-group {
+          margin-top: 3em;
+          gap: 1.2em;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          margin-bottom:0.5em;
         }
 
         .content {
@@ -170,30 +180,24 @@ export default function HomePage() {
           align-items: center;
         }
 
-        .button-group {
-          margin-top: 20px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1em;
-        }
 
         button {
           display: block;
           margin-bottom: 10px;
           padding: 10px 20px;
-          font-size: 16px;
-          background-color: #61dafb;
-          color: #282c34;
           border: none;
           cursor: pointer;
           border-radius: 0.4em;
+          font-size: 1.3rem;
+          background-color: #61dafb;
+          color: #282c34;
           width: 20vw;
           transition: background-color 0.3s ease;
         }
 
         button:hover {
-          background-color: #2196f3;
+          background-color: #2296g4;
+          border:2px solid ; 
         }
       `}</style>
     </main>
